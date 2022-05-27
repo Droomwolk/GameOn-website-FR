@@ -56,35 +56,49 @@
         <div class="content">
           <span class="close" onclick="closeModal()"></span>
           <div class="modal-body">
+            <div id="validation"></div>
             <form
+              class="formulaire"
               name="reserve"
               action="index.html"
               method="get"
-              onsubmit="return validate();"
+              onsubmit=" event.preventDefault();
+              validate();
+              "
             >
               <div
-                class="formData">
+                class="formData"
+                data-error="Le prénom doit être composer de minimum 2 caractères"
+                data-error-visible="false"
+                >
                 <label>Prénom</label><br>
                 <input
                   class="text-control"
                   type="text"
                   id="first"
                   name="first"
-                  minlength="2"
+   
                 /><br>
               </div>
               <div
-                class="formData">
+                class="formData"
+                data-error="Le nom doit être composer de minimum 2 caractères"
+                data-error-visible="false"
+                >
                 <label>Nom</label><br>
                 <input
                   class="text-control"
                   type="text"
                   id="last"
                   name="last"
+                 
                 /><br>
               </div>
               <div
-                class="formData">
+                class="formData"
+                data-error="Veuillez rentrer un email valide"
+                data-error-visible="false"
+                >
                 <label>E-mail</label><br>
                 <input
                   class="text-control"
@@ -94,7 +108,10 @@
                 /><br>
               </div>
               <div
-                class="formData">
+                class="formData"
+                data-error="Veuillez rentrer une date valide"
+                data-error-visible="false"
+                >
                 <label>Date de naissance</label><br>
                 <input
                   class="text-control"
@@ -104,13 +121,19 @@
                 /><br>
               </div>
               <div
-                class="formData">
+                class="formData"
+                data-error="Veuillez rentrer un nombre valide"
+                data-error-visible="false"
+                >
                 <label>À combien de tournois GameOn avez-vous déjà participé ?</label><br>
                 <input type="number" class="text-control" id="quantity" name="quantity" min="0" max="99">
               </div>
               <p class="text-label">A quel tournoi souhaitez-vous participer cette année ?</p>
               <div
-                class="formData">
+                class="formData"
+                data-error="Veuillez sélectionner une ville"
+                data-error-visible="false"
+                >
                 <input
                   class="checkbox-input"
                   type="radio"
