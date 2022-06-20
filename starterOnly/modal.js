@@ -33,6 +33,7 @@ function launchMercy() {
   validation.style.display = "block";
   formulaire.style.display = "none";
   let p = document.createElement("p");
+  document.getElementById("validation").innerHTML = "";
   document.getElementById("validation").appendChild(p);
   p.innerHTML = "Merci ! Votre réservation a été reçue.";
   p.classList.add("important");
@@ -65,7 +66,15 @@ formData[0].children[2].addEventListener(
 //Factorisation FIRST ET LAST VALUE
 function updateNameValue(indexInput) {
   console.log("first name change");
-  if (formData[indexInput].children[2].value.length <= 2) {
+  const regex = new RegExp("^([A-Za-z]{2,20})?([-]{0,1})?([A-Za-z]{2,20})$");
+  // const str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+  // if (regex.test(str)) {
+  //   return true;
+  // }
+  if (
+    !regex.test(formData[indexInput].children[2].value) ||
+    formData[indexInput].children[2].value.length <= 2
+  ) {
     formData[indexInput].setAttribute("data-error-visible", "true");
     return false;
   } else {
@@ -106,10 +115,10 @@ function updateEmailValue() {
     )
   ) {
     formData[2].setAttribute("data-error-visible", "false");
-    return false;
+    return true;
   } else {
     formData[2].setAttribute("data-error-visible", "true");
-    return true;
+    return false;
   }
 }
 
@@ -118,7 +127,24 @@ formData[3].children[2].addEventListener("change", updateDateValue);
 
 function updateDateValue() {
   console.log("date change");
-  if (formData[3].children[2].value.length <= 1) {
+
+  // const regex = new RegExp(
+  //   "s+(?:0[1-9]|[12][0-9]|3[01])[-/.](?:0[1-9]|1[012])[-/.](?:19d{2}|20[01][0-9]|2022)\b"
+  // );
+
+  // let regexDate =
+  //   "^(?:(?:31(/|-|.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(/|-|.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]d)?d{2})$|^(?:29(/|-|.)0?2\3(?:(?:(?:1[6-9]|[2-9]d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1d|2[0-8])(/|-|.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]d)?d{2})$";
+
+  // let regexDateFr = new RegExp("[0-9]{1,2}(/|-)[0-9]{1,2}(/|-)[0-9]{4}");
+
+  let regexfr = new RegExp(
+    "((?:19|20)\\d\\d)-(0?[1-9]|1[012])-([12][0-9]|3[01]|0?[1-9])"
+  );
+
+  if (
+    !regexfr.test(formData[3].children[2].value) ||
+    formData[3].children[2].value.length <= 1
+  ) {
     formData[3].setAttribute("data-error-visible", "true");
     return false;
   } else {
@@ -132,7 +158,18 @@ formData[4].children[2].addEventListener("change", updateQuantityValue);
 
 function updateQuantityValue() {
   console.log("quantity change");
-  if (formData[4].children[2].value.length <= 1) {
+
+  // const regex = new RegExp("^[0-9]$");
+
+  let pattern = /^\d+\.?\d*$/;
+
+  // let numberRegex = "^(d)*(.)?([0-9]{1})?$";
+
+  if (
+    !pattern.test(formData[4].children[2].value) ||
+    formData[4].children[2].value.length <= 0 ||
+    parseInt(formData[4].children[2].value) > 50
+  ) {
     formData[4].setAttribute("data-error-visible", "true");
     return false;
   } else {
@@ -176,13 +213,13 @@ const validate = () => {
   updateQuantityValue();
   updateCityValue();
   if (
-    // updateFirstValue &&
-    // updateLastValue &&
+    // updateFirstValue ||
+    // updateLastValue ||
     updateNameValue(0) &&
     updateNameValue(1) &&
-    updateEmailValue &&
-    updateDateValue &&
-    updateQuantityValue &&
+    updateEmailValue() &&
+    updateDateValue() &&
+    updateQuantityValue() &&
     updateCityValue()
   ) {
     launchMercy();
